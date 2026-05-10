@@ -1,0 +1,571 @@
+================================================================================
+  UNIVERSITY HORROR GAME — GAME DESIGN DOCUMENT
+  Last Updated: 2026-05-08
+================================================================================
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  CONCEPT SUMMARY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+A first-person horror game heavily inspired by Chilla's Art, set across the
+reading week before a university student's final exam. The player must balance
+four life pillars — School Work, Socializing, Daily Chores, and Entertainment —
+while managing a rising Stress & Anxiety meter as exam day closes in. The
+apartment is haunted, and paranormal activity bleeds into every mundane task.
+The horror never stops the game — it happens AROUND the player while they work,
+in the style of Mortuary Assistant: something moves in the corner while you
+study; something is in the hallway while you cook. You can investigate or
+ignore it, but the tasks don't pause.
+
+The game spans exactly 7 days (Reading Week Mon → Sun) plus the Exam on Monday.
+
+Locations:
+  - The Apartment  (primary hub — all daily life and paranormal activity)
+  - The University Campus  (Day 1 orientation + Exam Day only)
+
+The tone is lo-fi, oppressive, and mundane-turned-terrifying — the horror
+comes from recognizable student anxiety made literal.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  CORE PILLARS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. SCHOOL WORK
+   - Interactable computer in the apartment for online study
+   - In-person lectures and an exam at the university campus
+   - Exam difficulty scales with current Stress Level (harder under pressure)
+
+2. SOCIALIZING
+   - "Discord" voice call overlay — stylized UI, pre-written dialogue choices
+   - On-campus NPC interactions (friend, professor)
+   - Skipping social tasks builds stress
+
+3. DAILY CHORES
+   - Cooking (stove + fridge interaction)
+   - Washing dishes (sink)
+   - Laundry (washer → dryer, timed)
+   - Feeding the cat
+   - Taking out the garbage (carry bag to exit)
+   - Working out (push-ups / sit-ups — button rhythm mechanic on the apartment floor)
+
+4. ENTERTAINMENT
+   - Computer gaming: a Flappy Bird-style minigame playable on the in-game PC
+   - Provides the most stress relief but costs the most time
+
+5. STRESS & ANXIETY (the spine of the game)
+   - A single float value from 0 to 100
+   - Rises from: incomplete daily tasks, failing the exam, skipping meals/sleep
+   - Lowers from: completing tasks, gaming, socializing, working out
+   - Drives ALL paranormal activity (see Paranormal System below)
+   - Visualized via a physical whiteboard in the apartment
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  PARANORMAL SYSTEM
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Design approach: HYBRID (dynamic stress-driven tiers + authored day-floor minimums)
+
+  Dynamic: paranormal tier is determined by current Stress Level in real time.
+  Authored: each day has a minimum stress floor, ensuring pacing even if the
+            player is managing their tasks well.
+
+  Stress Tier Table:
+  ┌──────────────┬─────────────────────────────────────────────────────────────┐
+  │  0  – 25     │  TIER 1 — Subtle                                            │
+  │              │  Flickering lights, faint sounds at edge of hearing         │
+  ├──────────────┼─────────────────────────────────────────────────────────────┤
+  │  25 – 50     │  TIER 2 — Moderate                                          │
+  │              │  Doors opening alone, cat staring at nothing,               │
+  │              │  silhouette in window reflection                            │
+  ├──────────────┼─────────────────────────────────────────────────────────────┤
+  │  50 – 75     │  TIER 3 — Active                                            │
+  │              │  Figure at end of hallway that vanishes, phone calls,       │
+  │              │  objects found misplaced                                    │
+  ├──────────────┼─────────────────────────────────────────────────────────────┤
+  │  75 – 100    │  TIER 4 — Confrontational                                   │
+  │              │  Jumpscares, entity visible in the apartment                │
+  └──────────────┴─────────────────────────────────────────────────────────────┘
+
+  Day Floor Minimums — Reading Week progression:
+    Day 1  Mon  → Floor 0   (clean slate, paranormal entirely avoidable)
+    Day 2  Tue  → Floor 10  (first hint — one guaranteed Tier 1 event)
+    Day 3  Wed  → Floor 25  (Tier 1 always active, apartment feels wrong)
+    Day 4  Thu  → Floor 35  (Tier 2 bleeds in, familiar spaces feel hostile)
+    Day 5  Fri  → Floor 50  (Tier 2 guaranteed, harder to ignore)
+    Day 6  Sat  → Floor 60  (Tier 3 active, no safe room in the apartment)
+    Day 7  Sun  → Floor 70  (Exam Eve — Tier 3/4 boundary, dread peaks)
+    Exam   Mon  → Floor 80  (Tier 4 — player carries everything into the exam)
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  ALARM CLOCK MECHANIC
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Before the player sleeps, they must interact with the alarm clock on the
+  nightstand and set a wake-up time. The time chosen is a direct tradeoff:
+
+    Earlier alarm  → more day time, but harder wake-up minigame (groggier)
+    Later alarm    → easier wake-up, but less time for tasks (stress penalty risk)
+
+  WAKE-UP MINIGAME
+  When the alarm fires, the screen fades in blurry and disorienting. The player
+  must complete a short minigame to get out of bed. Failing it hits snooze —
+  the alarm fires again after a short in-game delay, costing time.
+
+  Minigame design (pick one per day, rotate to avoid repetition):
+    BUTTON MASH       Rapidly press E to silence the alarm before it runs out.
+                      Sleep-deprived = fewer button presses allowed.
+    FOCUS             A blurry crosshair must be steadied over a small target.
+                      Sways wildly on high-stress days.
+    SEQUENCE          A short Simon-style button sequence shown briefly then
+                      hidden. Gets longer as the week progresses.
+
+  Snooze logic:
+    - Each snooze costs a fixed block of in-game time (e.g. 30 min)
+    - 3 snoozes in a row applies a small stress penalty ("overslept again")
+    - On Exam Day, snoozing too many times locks the player out of prep time
+      and feeds directly into exam difficulty
+
+  AlarmClockManager owns:
+    - SetAlarm(hour)         called when player interacts with clock before sleep
+    - OnAlarmFired()         triggers wake-up sequence + minigame
+    - Snooze()               delays next alarm, increments snooze counter
+    - WakeUp()               clears alarm state, begins new day, updates DaySystem
+
+  Horror tie-in:
+    The alarm going off is one of the few guaranteed moments the player is
+    disoriented and helpless. On high-stress days (Day 5+), a paranormal event
+    can fire DURING the wake-up minigame — a figure at the doorway while the
+    screen is still blurry, a sound from under the bed before the player can
+    move. The player cannot act on it yet. That helplessness is the point.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  MORTUARY ASSISTANT-STYLE HORROR
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Core principle borrowed from Mortuary Assistant: the horror happens AROUND
+  the player while they are doing something else. The task never pauses. The
+  player chooses whether to investigate or push through — both choices have cost.
+
+  This reframes the paranormal system entirely. Events do not interrupt gameplay.
+  They bleed into it.
+
+  EXAMPLES BY TASK:
+
+    STUDYING AT COMPUTER
+      Something moves in the monitor reflection behind you.
+      A new browser tab opens by itself while you're reading notes.
+      Your study material text briefly scrambles and re-sets.
+      A knock on the front door — no one is there if you check.
+
+    COOKING
+      A figure is visible at the end of the hallway through the kitchen doorway.
+      The cat bolts from the room for no reason mid-cook.
+      The stove pilot light goes out on its own.
+      You hear your own name spoken quietly from another room.
+
+    DOING LAUNDRY
+      The washing machine starts a cycle you didn't start.
+      Something scrapes along the inside of the dryer while it runs.
+      The hallway light outside the laundry area flickers and dies.
+
+    WORKING OUT
+      Counts on screen tick backwards briefly.
+      A shadow passes under the gap of the closed bedroom door.
+      The room temperature visually "drops" (breath fog, slight blue grade).
+
+    TRYING TO SLEEP
+      Lying in bed, unable to sleep — sounds from the kitchen.
+      The room is dark but something is briefly visible in the doorway.
+      Phone buzzes with an unknown contact, no message — just open air.
+
+  INVESTIGATE OR IGNORE — the player's dilemma:
+    Investigating costs task time → risks incomplete tasks → raises stress
+    Ignoring builds psychological pressure → the paranormal escalates faster
+                                             if never acknowledged
+    This is the core tension loop. Neither choice is safe.
+
+  IMPLEMENTATION NOTES:
+    - All paranormal events during tasks are flagged as "ambient" vs "blocking"
+      Ambient = player can see/hear but keep doing the task (most events)
+      Blocking = rare, Tier 4 only, forces player to respond (e.g. phone rings,
+                 must pick up or stress spikes; door slams shut, path blocked)
+    - The ParanormalManager knows which task the player is currently doing and
+      selects events from that task's event pool (not a random global pool)
+    - Each task has a field: List<ParanormalEventSO> ambientEventsWhileActive
+    - Events are authored to feel spatially coherent with the task location
+      (kitchen events happen near the kitchen, not the bathroom)
+    - On Days 1–2, events are subtle enough that the player may question whether
+      they imagined it. By Day 5+, they are unambiguous.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  DEVELOPMENT ROADMAP  (Solo Dev)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  RULE: Build systems before content. Grey-box first, art last.
+
+──────────────────────────────────────────────────────────────────────────────
+  PHASE 1 — Core Architecture  (nothing else starts until this is done)
+──────────────────────────────────────────────────────────────────────────────
+  [ ] GameManager         Singleton, owns global state, DontDestroyOnLoad
+  [ ] DaySystem           Tracks day 1–8 (Mon reading week → exam Mon) +
+                          time-of-day, advances when player sleeps
+  [ ] StressManager       Float 0–100, raises/lowers on events, broadcasts
+                          OnStressChanged event for all other systems to hear
+  [ ] TaskBoardManager    ScriptableObject-driven daily task list per day,
+                          applies stress penalties at end of day for incomplete tasks
+  [ ] AlarmClockManager   SetAlarm(), OnAlarmFired(), Snooze(), WakeUp()
+                          Owns snooze counter + wake-up minigame trigger
+
+──────────────────────────────────────────────────────────────────────────────
+  PHASE 2 — Interaction Foundation
+──────────────────────────────────────────────────────────────────────────────
+  [ ] IInteractable       Interface: GetPromptText() + Interact()
+  [ ] InteractionSystem   Camera raycast, detects IInteractable, shows prompt UI
+                          NOTE: every interactive object in the game uses this —
+                          build it once and build it correctly.
+
+──────────────────────────────────────────────────────────────────────────────
+  PHASE 3 — Apartment Scene (grey-box first, then dress)
+──────────────────────────────────────────────────────────────────────────────
+  Build interactables in this order:
+  [ ] Computer            Two modes: Study Mode + Game Mode (Flappy Bird)
+  [ ] Whiteboard          Renders today's TaskBoard data, shows checkmarks
+  [ ] Alarm Clock         Set alarm interaction → AlarmClockManager.SetAlarm()
+                          Wake-up minigames: Button Mash / Focus / Sequence
+                          (rotate across days, escalate difficulty with stress)
+  [ ] Bed / Sleep         Triggers end-of-day sequence → alarm set check →
+                          advances DaySystem on successful wake-up
+  [ ] Cat                 Walk near → "Feed Cat" → depletes food bowl object
+  [ ] Cooking             Stove + fridge, timed interaction
+  [ ] Laundry             Washer trigger → wait/skip → dryer
+  [ ] Dishes              Sink interaction
+  [ ] Garbage             Pick up bag, carry to door
+  [ ] Workout             Floor area, button-press rhythm (E repeatedly or Q/E alt)
+
+──────────────────────────────────────────────────────────────────────────────
+  PHASE 4 — Campus Scene
+──────────────────────────────────────────────────────────────────────────────
+  [ ] SceneLoader         Preserves GameManager/StressManager across transitions
+  [ ] Hallway             Long corridor, sparse NPCs, heavy ambient audio
+  [ ] Lecture             Sit trigger → time-skip or "take notes" interaction
+  [ ] Exam                Timed multiple-choice; harder if StressLevel is high
+                          (options shuffle, timer shortens at high stress)
+
+──────────────────────────────────────────────────────────────────────────────
+  PHASE 5 — Paranormal System  (Mortuary Assistant style)
+──────────────────────────────────────────────────────────────────────────────
+  [ ] ParanormalManager   Listens to OnStressChanged + DaySystem + active task
+                          Maintains ambient event pools per tier PER TASK
+                          Fires events at weighted intervals without interrupting
+                          current task; tracks "ignored event" count
+  [ ] Task-Aware Events   Each task's SO holds its own ambient event list.
+                          Events are spatially coherent with task location.
+  [ ] Tier 1 Events       Monitor reflections, subsonic hum, faint footsteps
+  [ ] Tier 2 Events       Doors, cat reaction, figure in hallway doorway,
+                          stove light out, laundry machine self-starting
+  [ ] Tier 3 Events       Your name spoken, shadow under door, phone buzz
+                          (unknown contact), text scramble, browser tab opens
+  [ ] Tier 4 Events       Blocking events (door slams shut, phone must be
+                          answered), direct entity sighting, alarm minigame
+                          horror injection on Days 5+
+  [ ] Investigate/Ignore  Player can walk toward or away from any ambient event.
+                          Ignoring too many escalates the Director's aggression.
+                          Investigating costs task time → stress penalty risk.
+
+──────────────────────────────────────────────────────────────────────────────
+  PHASE 6 — Socializing
+──────────────────────────────────────────────────────────────────────────────
+  [ ] Discord Call UI     Full-screen overlay, avatar + name, dialogue options
+                          Completing a call lowers stress
+  [ ] Campus NPC Dialogue Story beats: concerned friend, professor exam hint
+
+──────────────────────────────────────────────────────────────────────────────
+  PHASE 7 — Polish  (Chilla's Art feel)
+──────────────────────────────────────────────────────────────────────────────
+  [ ] Post-processing     Film grain, vignette, chromatic aberration
+                          All intensify dynamically with StressLevel
+  [ ] Ambient Audio       Apartment hum, city outside, silence handled carefully
+  [ ] Walk speed + FOV    Slow, slightly claustrophobic
+  [ ] VHS / lo-fi look    URP post-process stack
+  [ ] UI typography       Clean, minimal, slightly clinical
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  RECOMMENDED FOLDER STRUCTURE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Assets/
+    Scripts/
+      Core/               GameManager, DaySystem, StressManager
+      Interaction/        IInteractable, InteractionSystem, prompt UI
+      Tasks/              TaskBoardManager, TaskData ScriptableObject
+      Alarm/              AlarmClockManager, WakeUpMinigameController
+      Paranormal/         ParanormalManager, ParanormalEventSO, event pools
+      Minigames/          FlappyBird, WakeUpMinigames (ButtonMash/Focus/Sequence)
+      UI/
+      Player/             (already exists)
+    Scenes/
+      Bootstrap           (persistent — never unloads)
+      Apartment
+      Campus
+      MainMenu
+    ScriptableObjects/
+      DailyTasks/         One SO per day (Day1Tasks … Day7Tasks + ExamDay)
+      ParanormalEvents/   One SO per event, organized by tier + task context
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  IMMEDIATE NEXT STEPS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  1. Set up the Scripts/ folder structure above
+  2. Write GameManager, DaySystem, StressManager (Phase 1)
+  3. Write IInteractable + InteractionSystem (Phase 2)
+  4. Test with the Whiteboard as the first interactive object
+  5. Everything else layers on top of these four systems
+
+
+================================================================================
+
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  HORROR DESIGN PRINCIPLES  (adapted from research & shipped horror games)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  These are engineering and design rules extracted from Frictional Games, Alien:
+  Isolation, Amnesia post-mortems, and horror level-design analysis. Story
+  specifics have been removed — everything below applies directly to this game.
+
+──────────────────────────────────────────────────────────────────────────────
+  1. SCARES ALONE DO NOT MAKE A HORROR GAME
+──────────────────────────────────────────────────────────────────────────────
+
+  Horror should be judged by how well it fulfills its core principles, not by
+  how generically "fun" it is. This game's horror is only as strong as the day
+  loop underneath it. If the task/stress loop isn't satisfying to engage with,
+  no amount of paranormal activity will save it.
+
+  The three non-negotiable pillars for THIS game:
+
+    MUNDANE PRESSURE       The daily routine feels real and genuinely demanding.
+                           The player must actually care about completing tasks —
+                           stress has to feel earned, not arbitrary.
+
+    ANTICIPATION OVER      The paranormal works through imagination. A sound in
+    SPECTACLE              the next room is scarier than a model in your face.
+                           Space events apart. Silence is a tool.
+
+    READABLE STAKES        The player always knows: what day it is, what tasks
+                           remain, and roughly how stressed they are. Horror
+                           needs a legible goal underneath the fear layer —
+                           confusion is frustrating, not scary.
+
+──────────────────────────────────────────────────────────────────────────────
+  2. THE DAY LOOP IS YOUR DESCENT LOOP
+──────────────────────────────────────────────────────────────────────────────
+
+  Each day of Reading Week must take something away from the player:
+    Mon–Tue  → Takes away TIME     (tasks pile up faster than expected)
+    Wed–Thu  → Takes away SILENCE  (Tier 1–2 paranormal, apartment feels wrong)
+    Fri–Sat  → Takes away SAFETY   (Tier 2–3 active, familiar spaces hostile)
+    Sun      → Takes away SLEEP    (alarm minigame hardest, rest barely helps)
+    Exam Mon → Takes away CONTROL  (Tier 3–4, stress floor non-negotiable)
+
+  After each escalation, briefly restore a sense of safety before the next one.
+  Recovery beats matter: finishing a chore, a successful Discord call, the cat
+  behaving normally for a moment — these create contrast that makes the next
+  scare land harder.
+
+  Rule: space paranormal events apart. Constant shocks desensitize the player.
+  One well-timed event after a long quiet stretch beats five cheap ones in a row.
+
+──────────────────────────────────────────────────────────────────────────────
+  3. PROTOTYPE → VERTICAL SLICE → PRODUCTION  (do not skip steps)
+──────────────────────────────────────────────────────────────────────────────
+
+  PROTOTYPE   Does the day loop feel worth playing?
+              Minimum output: one full day (wake → tasks → sleep), stress meter
+              working, one paranormal event firing, end-of-day penalty applying.
+              Answer this before building the campus or any chore past #2.
+
+  VERTICAL    Can you produce the game at the intended quality and pace?
+  SLICE       Minimum output: Days 1–3, apartment fully grey-boxed, all chores
+              stubbed, one polished paranormal encounter, final-feel audio mix,
+              final-feel post-processing. Save/load working.
+
+  PRODUCTION  Does the slice scale without new core tech?
+              Reusable day configs (ScriptableObjects), paranormal event pool
+              populated, campus scene built, all interactables production-ready.
+
+  ALPHA       Systems locked. No new mechanics — only tuning, bug fixes,
+              missing content.
+
+  BETA        Content locked. Full playthrough, onboarding polish, performance
+              pass, bug fixing.
+
+  RULE: No new core systems after the vertical slice. If a new idea doesn't
+  clearly strengthen Mundane Pressure, Anticipation, or Readable Stakes — cut
+  it or save it for a future project.
+
+──────────────────────────────────────────────────────────────────────────────
+  4. ARCHITECTURE: BOOTSTRAP SCENE + ADDITIVE LOADING
+──────────────────────────────────────────────────────────────────────────────
+
+  Use a persistent Bootstrap scene that never unloads, plus additive scene
+  loading for Apartment and Campus. This means:
+
+    Bootstrap scene holds:  GameManager, DaySystem, StressManager,
+                            TaskBoardManager, ParanormalManager,
+                            AudioMixer, SaveSystem, global UI
+
+    Loaded additively:      Apartment scene, Campus scene
+
+  This is the only architecture that lets stress, day state, and paranormal
+  logic persist cleanly across scene transitions without DontDestroyOnLoad hacks
+  on every system.
+
+  Keep content data in ScriptableObjects, not hardcoded in MonoBehaviours:
+    - TaskData SO          one per day, defines task list + stress penalties
+    - ParanormalEventSO    defines event type, tier, cooldown, conditions
+    - AudioCueSetSO        groups audio clips by context (footsteps, ambient, etc.)
+
+  Use ScriptableObject event channels for cross-system signals:
+    OnStressChanged        → ParanormalManager, PostProcessingController, UI
+    OnDayAdvanced          → TaskBoardManager, ParanormalManager, DayUI
+    OnTaskCompleted        → StressManager, WhiteboardRenderer
+    OnParanormalEventFired → AudioManager, LightingController
+
+──────────────────────────────────────────────────────────────────────────────
+  5. PARANORMAL ENTITY: DIRECTOR + LOCAL AI  (Alien: Isolation pattern)
+──────────────────────────────────────────────────────────────────────────────
+
+  Do NOT attempt a fully simulated omnipresent entity for v1. Use two layers:
+
+    TENSION DIRECTOR       High-level. Knows current StressLevel, day number,
+    (ParanormalManager)    time since last event, and player location. Decides
+                           WHEN an event should fire and at what intensity.
+                           Also handles pacing — if the player has been in a
+                           high-stress state too long with no relief, it backs
+                           off to allow recovery before escalating again.
+
+    LOCAL EVENT            Low-level. The actual paranormal event playing out —
+    (individual events)    a door opening, a sound cue, a figure appearing.
+                           Each event is self-contained and fires when the
+                           Director triggers it.
+
+  This creates the illusion of a living, responsive haunting without simulating
+  a full entity at all times. The Director is what makes it feel intelligent;
+  the local events are what make it feel physical.
+
+  Paranormal event states to implement (mirrors a FSM):
+    Dormant → Activating → Active → Fading → Cooldown → Dormant
+
+  IMPORTANT — Preview before pressure:
+  Introduce each paranormal behavior in a safe/low-stress context before the
+  player encounters it under real pressure. Example: on Day 1 a light flickers
+  once while stress is at 10 — the player learns lights flicker. On Day 4 a
+  light goes out entirely during a tense moment — they already have context.
+  Never test a mechanic before teaching it.
+
+──────────────────────────────────────────────────────────────────────────────
+  6. AUDIO IS YOUR PRIMARY HORROR TOOL  (not visuals)
+──────────────────────────────────────────────────────────────────────────────
+
+  Horror depends on anticipation and imagination. A sound that implies something
+  is scarier than showing it. Design rule: the paranormal should be HEARD before
+  it is SEEN, always.
+
+  Systematize every audio layer:
+
+    PLAYER FOOTSTEPS       Surface-aware (carpet vs. hardwood vs. tile).
+                           Movement speed changes cadence. The player hears
+                           themselves — silence when standing still matters.
+
+    AMBIENT LAYER          Apartment hum, city outside, building settling.
+                           This should never be fully absent. True silence = wrong.
+
+    PARANORMAL AUDIO       Each tier has its own sound design language:
+                           Tier 1: subsonic hum, barely-audible breathing
+                           Tier 2: distant door creak, faint footsteps elsewhere
+                           Tier 3: distinct sounds in adjacent rooms, voice fragments
+                           Tier 4: immediate, close, unavoidable
+
+    PROXIMITY HEARTBEAT    A low-frequency heartbeat layer that only activates
+                           when StressLevel > 60. Keep it subtle — the moment it
+                           becomes constant background noise it loses all meaning.
+
+  Use Unity's Audio Mixer as the control room. Create named snapshots:
+    "Calm"       → full ambience, no paranormal layer, normal EQ
+    "Uneasy"     → ambience slightly ducked, paranormal layer at low volume
+    "Active"     → ambience suppressed, paranormal prominent, slight reverb
+    "Encounter"  → ambience muted, heartbeat in, LPF on everything else
+
+  Transition between snapshots when StressLevel crosses tier thresholds.
+  Do NOT hand-tune individual audio sources every time you rebalance tension.
+
+  Noise propagation (for paranormal awareness, not an AI enemy):
+  Emit a NoiseEvent (loudness, position) when the player makes noise — moving
+  fast, dropping something, knocking. Attenuate by distance and wall count.
+  Paranormal tier can react to this — activity slightly increases after the
+  player makes noise above a threshold. Rewards calm, deliberate play.
+
+──────────────────────────────────────────────────────────────────────────────
+  7. LEVEL LAYOUT: CONTROL KNOWLEDGE, NOT RANDOMNESS
+──────────────────────────────────────────────────────────────────────────────
+
+  Fear comes from not knowing what's around a corner, not from random event
+  placement. The apartment layout should use this deliberately:
+
+  - The player should never be able to see the full apartment from one spot
+  - Long sightlines (hallway to bathroom) exist specifically to be used for
+    paranormal figures that vanish before the player reaches them
+  - Every room needs a "safe corner" — somewhere the player can stand with
+    their back to a wall. This makes paranormal events in open floor space
+    feel more threatening by contrast.
+  - Recovery spaces: the bathroom, inside the closet, under the desk.
+    These aren't mechanics — they're psychological anchors. The player will
+    seek them instinctively. Design paranormal events to respect and then
+    violate those spaces as stress escalates.
+
+──────────────────────────────────────────────────────────────────────────────
+  8. SAVE SYSTEM — KEEP IT SIMPLE
+──────────────────────────────────────────────────────────────────────────────
+
+  Local JSON save via Application.persistentDataPath + JsonUtility.
+  Save only what the player would expect to survive quitting:
+    - Current day + time of day
+    - StressLevel
+    - Completed tasks (per day)
+    - Key states (cat fed, laundry in machine, etc.)
+
+  Do NOT try to serialize the full paranormal event state. On load, the
+  ParanormalManager re-derives tier from StressLevel + day number — that's
+  enough to restore the correct atmosphere without complex state serialization.
+
+──────────────────────────────────────────────────────────────────────────────
+  9. TESTING & PERFORMANCE
+──────────────────────────────────────────────────────────────────────────────
+
+  Use Unity Test Framework from the vertical slice onward. Cover:
+    - Save/load round-trip (serialize → deserialize → state matches)
+    - StressManager: penalties apply correctly at end-of-day
+    - TaskBoardManager: correct tasks load per day
+    - Paranormal event cooldowns: events don't double-fire
+
+  Performance notes for this specific game:
+    - Occlusion culling is essential. Room-and-corridor apartment layouts are
+      exactly the geometry it was designed for. Enable it early, bake often.
+    - Object pooling for paranormal event objects (particle effects, audio
+      sources) — don't instantiate/destroy per event.
+    - Profile on your actual target hardware, not just in the Editor.
+      Audio Mixer DSP cost is invisible in the Editor but real on device.
+
+
+================================================================================
