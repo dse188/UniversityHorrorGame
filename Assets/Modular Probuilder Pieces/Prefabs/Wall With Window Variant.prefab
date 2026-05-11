@@ -86,6 +86,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 372234143965520186, guid: e6896d055d3eb8d4eb69566bc79954b1, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 521852466263338120, guid: e6896d055d3eb8d4eb69566bc79954b1, type: 3}
       propertyPath: m_Materials.Array.size
       value: 2
@@ -101,6 +105,10 @@ PrefabInstance:
     - target: {fileID: 3857438175741632740, guid: e6896d055d3eb8d4eb69566bc79954b1, type: 3}
       propertyPath: m_Name
       value: Wall With Window Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 4811621856822821737, guid: e6896d055d3eb8d4eb69566bc79954b1, type: 3}
+      propertyPath: m_Mesh
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 6869465043810239839, guid: e6896d055d3eb8d4eb69566bc79954b1, type: 3}
       propertyPath: m_LocalPosition.x
@@ -141,6 +149,10 @@ PrefabInstance:
     - target: {fileID: 6869465043810239839, guid: e6896d055d3eb8d4eb69566bc79954b1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7852876407214384833, guid: e6896d055d3eb8d4eb69566bc79954b1, type: 3}
+      propertyPath: m_Mesh
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 7852876407214384833, guid: e6896d055d3eb8d4eb69566bc79954b1, type: 3}
       propertyPath: m_VersionIndex
