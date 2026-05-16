@@ -16,9 +16,9 @@ public class InteractionSystem : MonoBehaviour
         UpdateTarget();
     }
 
-    public void OnInteract(InputAction.CallbackContext context)
+    public void OnInteract(InputValue value)
     {
-        if (!context.performed) return;
+        if (!value.isPressed) return;
         currentTarget?.Interact();
     }
 
