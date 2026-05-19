@@ -17,9 +17,14 @@ public class DaySystem : MonoBehaviour
     public DayDataSO CurrentDay => 
         (currentDayIndex >= 0 && currentDayIndex < days.Count) ? days[currentDayIndex] : null;
 
+/**
+    * public int SlotsRemaining() {
+        get { return slotsRemaining; }
+    }
+*/
     public int SlotsRemaining => slotsRemaining;
     public int DayIndex => currentDayIndex;
-    public bool isExhausted => slotsRemaining <= 0;
+    public bool IsExhausted => slotsRemaining <= 0;
 
     private void Start()
     {
@@ -46,8 +51,39 @@ public class DaySystem : MonoBehaviour
 
     private void EnterDay(int index)
     {
+        // Capture BEFORE we change currentDayIndex - null on Day 1.
+        DayDataSO previousDay = CurrentDay;
+
         currentDayIndex = index;
         slotsRemaining = days[index].SlotBudget;
+
+        // Stress query must run BEFORE OnDayAdvanced so contributors (TaskBoardManager,
+        // AlarmClockManager) still hold previous-day state when queried.
+        ApplyDayStartStress(days[index], previousDay);
+
         OnDayAdvanced?.Invoke(days[index]);
+    }
+
+    private void ApplyDayStartStress(DayDataSO newDay, DayDataSO previousDay)
+    {
+        int startingStress = newDay.StressFloor 
+                           + GetIncompleteRolloverFromPreviousDay(previousDay)
+                           + GetOversleepingPenaltyFromPreviousDay();
+
+        // TODO: replace with stressManager.SetBaseline(startingStress) once StressManger exists.
+        Debug.Log($"[DaySystem] Day {newDay.DayNumber} start stress = {startingStress}");
+    }
+
+    // TODO: wired when TaskBoardManager exists.
+    private int GetIncompleteRolloverFromPreviousDay(DayDataSO previousDay)
+    {
+        if (previousDay == null) return 0;
+        return 0;
+    }
+
+    // TODO: wired when AlarmClockManager exists.
+    private int GetOversleepingPenaltyFromPreviousDay()
+    {
+        return 0;
     }
 }

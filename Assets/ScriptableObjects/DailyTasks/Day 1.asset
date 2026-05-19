@@ -12,10 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c211184e52b040244be312a37d2c5f1d, type: 3}
   m_Name: Day 1
   m_EditorClassIdentifier: Assembly-CSharp::DayDataSO
-  dayNumber: 0
-  dayName: 
+  dayNumber: 1
+  dayName: Monday
   isSpecialDay: 0
   specialDayLabel: 
   slotBudget: 6
   stressFloor: 0
-  requiredTasks: []
+  requiredTasks:
+  - title: Study for one hour
+    incompleteRollover: 5
+    stressRelief: 2
+  - title: Wash dishes
+    incompleteRollover: 5
+    stressRelief: 2
+  - title: Feed cat
+    incompleteRollover: 5
+    stressRelief: 2

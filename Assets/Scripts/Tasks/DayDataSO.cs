@@ -45,17 +45,4 @@ public class DayDataSO : ScriptableObject
     public int SlotBudget => slotBudget;
     public int StressFloor => stressFloor;
     public IReadOnlyList<TaskDef> RequiredTasks => requiredTasks;
-
-    //TODO: Need to add some kind of calculation for the rollover of stress to the next day based on incomplete tasks. 
-    // Maybe we can just have a field in TaskDef for how much stress is added to the next day if it's incomplete, 
-    // and then we can calculate the total stress added to the next day based on which tasks are incomplete at the end of the day. 
-    // Eventually, we will also need to add the stress penalty for missing the alarm and oversleeping, but for now we assume player always wakes up on time.
-    public int StressRolloverFromTasks(List<TaskDef> incompleteTasks)
-    {
-        int totalRollover = 0;
-        foreach (var task in incompleteTasks)
-        {
-            totalRolloever += task.incompleteRollover;
-        }
-    }
 }
