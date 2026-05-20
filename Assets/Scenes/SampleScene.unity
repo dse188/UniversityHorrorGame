@@ -27158,8 +27158,10 @@ GameObject:
   - component: {fileID: 735555694}
   - component: {fileID: 735555693}
   - component: {fileID: 735555692}
+  - component: {fileID: 735555695}
+  - component: {fileID: 735555696}
   m_Layer: 0
-  m_Name: DaySystem
+  m_Name: GameSystem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27193,6 +27195,7 @@ MonoBehaviour:
   days:
   - {fileID: 11400000, guid: d3c612840c4b89c4e8518c509aed7c1e, type: 2}
   - {fileID: 11400000, guid: de0a93d5b7b362249966a36fd70de198, type: 2}
+  stressManager: {fileID: 735555695}
 --- !u!4 &735555694
 Transform:
   m_ObjectHideFlags: 0
@@ -27208,6 +27211,31 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &735555695
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 735555691}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4051724cea4d78e45b540944136e3ca1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StressManager
+--- !u!114 &735555696
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 735555691}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4dfe0dc0106725d40ba6ae927483a1e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StressManagerDebugHUD
+  stressManager: {fileID: 735555695}
 --- !u!1 &805630741
 GameObject:
   m_ObjectHideFlags: 0
