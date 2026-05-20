@@ -5,6 +5,7 @@ using UnityEngine;
 public class DaySystem : MonoBehaviour
 {
     [SerializeField] private List<DayDataSO> days = new();
+    [SerializeField] private StressManager stressManager;
 
     public event Action<DayDataSO> OnDayAdvanced;
     public event Action<int> OnSlotConsumed;

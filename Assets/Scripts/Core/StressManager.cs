@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class StressManager : MonoBehaviour
@@ -6,24 +7,19 @@ public class StressManager : MonoBehaviour
 
     public int CurrentStress => currentStress;
 
-    public int AddStress(int amount)
-    {
-        currentStress += amount;
-        Debug.Log($"Added {amount} stress. Current stress: {currentStress}");
-        return currentStress;
-    }
+    public event Action<int> OnStressChanged;
 
-    public int RelieveStress(int amount)
-    {
-        currentStress = MathF.Max(0, currentStress - amount); // avoid negative stress
-        Debug.Log($"Relieved {amount} stress. Current stress: {currentStress}");
-        return currentStress;
-    }
+    public void AddStress(int amount)         => Apply(currentStress + amount);
+    public void RelieveStress(int amount)     => Apply(currentStress - amount);
+    public void SetBaselineStress(int amount) => Apply(amount);
 
-    public int SetBaselineStress(int amount)
+    private void Apply(int proposedValue)
     {
-        currentStress = amount;
-        Debug.Log($"Baseline stress set to {currentStress}");
-        return currentStress;
+        int clamped = Mathf.Clamp(proposedValue, 0, 100);
+        if (clamped == currentStress) return;
+
+        currentStress = clamped;
+        Debug.Log($"Stress changed to {currentStress}");
+        OnStressChanged?.Invoke(currentStress);
     }
 }
