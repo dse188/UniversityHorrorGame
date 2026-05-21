@@ -6,6 +6,7 @@ public class DaySystem : MonoBehaviour
 {
     [SerializeField] private List<DayDataSO> days = new();
     [SerializeField] private StressManager stressManager;
+    [SerializeField] private TaskBoardManager taskBoardManager;
 
     public event Action<DayDataSO> OnDayAdvanced;
     public event Action<int> OnSlotConsumed;
@@ -71,15 +72,18 @@ public class DaySystem : MonoBehaviour
                            + GetIncompleteRolloverFromPreviousDay(previousDay)
                            + GetOversleepingPenaltyFromPreviousDay();
 
-        // TODO: replace with stressManager.SetBaseline(startingStress) once StressManger exists.
-        Debug.Log($"[DaySystem] Day {newDay.DayNumber} start stress = {startingStress}");
+    
+        if (stressManager != null)
+        {
+            stressManager.SetBaselineStress(startingStress);
+        }
     }
 
     // TODO: wired when TaskBoardManager exists.
     private int GetIncompleteRolloverFromPreviousDay(DayDataSO previousDay)
     {
         if (previousDay == null) return 0;
-        return 0;
+        return taskBoardManager != null ? taskBoardManager.GetIncompleteRolloverFor(previousDay) : 0;
     }
 
     // TODO: wired when AlarmClockManager exists.
