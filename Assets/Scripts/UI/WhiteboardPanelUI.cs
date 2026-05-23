@@ -1,16 +1,23 @@
 using UnityEngine;
+using TMPro;
 
 public class WhiteboardPanelUI : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [SerializeField] private GameObject root;
+    [SerializeField] private TMP_Text titleText;
+    [SerializeField] private TMP_Text bodyText;
+
+    public bool IsOpen => root != null && root.activeSelf;
+
+    public void Show(string title, string body)
     {
-        
+        titleText.text = title;
+        bodyText.text = body;
+        root.SetActive(true);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Hide()
     {
-        
+        root.SetActive(false);
     }
 }

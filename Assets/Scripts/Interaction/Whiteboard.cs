@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Text;
 
-public class Whiteboard : MonoBehaviour
+public class Whiteboard : MonoBehaviour, IInteractable
 {
  [SerializeField] private TaskBoardManager taskBoardManager;
  [SerializeField] private DaySystem daySystem;
@@ -10,8 +10,8 @@ public class Whiteboard : MonoBehaviour
  public string GetPromptText()
     {
         return panelUI != null && panelUI.IsOpen
-        ? "Press E to close whiteboard"
-        : "Press E to view whiteboard";
+            ? "Press E to close"
+            : "Press E to view tasks";
     }
 
     public void Interact()
