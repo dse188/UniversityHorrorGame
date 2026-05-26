@@ -7,6 +7,7 @@ public class DaySystem : MonoBehaviour
     [SerializeField] private List<DayDataSO> days = new();
     [SerializeField] private StressManager stressManager;
     [SerializeField] private TaskBoardManager taskBoardManager;
+    [SerializeField] private AlarmClockManager alarmClockManager;
 
     public event Action<DayDataSO> OnDayAdvanced;
     public event Action<int> OnSlotConsumed;
@@ -57,7 +58,7 @@ public class DaySystem : MonoBehaviour
         DayDataSO previousDay = CurrentDay;
 
         currentDayIndex = index;
-        slotsRemaining = days[index].SlotBudget;
+        slotsRemaining = days[index].SlotBudget + GetAlarmSlotBonus();
 
         // Stress query must run BEFORE OnDayAdvanced so contributors (TaskBoardManager,
         // AlarmClockManager) still hold previous-day state when queried.
@@ -79,16 +80,24 @@ public class DaySystem : MonoBehaviour
         }
     }
 
-    // TODO: wired when TaskBoardManager exists.
     private int GetIncompleteRolloverFromPreviousDay(DayDataSO previousDay)
     {
         if (previousDay == null) return 0;
         return taskBoardManager != null ? taskBoardManager.GetIncompleteRolloverFor(previousDay) : 0;
     }
 
-    // TODO: wired when AlarmClockManager exists.
+
     private int GetOversleepingPenaltyFromPreviousDay()
     {
-        return 0;
+        return alarmClockManager != null
+            ? alarmClockManager.GetOverSleepPenaltyFromPreviousDay()
+            : 0;
+    }
+
+    private int GetAlarmSlotBonus()
+    {
+        return alarmClockManager != null 
+            ? alarmClockManager.GetBonusSlotsForToday() 
+            : 0;
     }
 }

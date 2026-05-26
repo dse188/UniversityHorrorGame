@@ -28,3 +28,6 @@ MonoBehaviour:
   - title: Feed cat
     incompleteRollover: 5
     stressRelief: 2
+  - title: Cook dinner
+    incompleteRollover: 5
+    stressRelief: 2

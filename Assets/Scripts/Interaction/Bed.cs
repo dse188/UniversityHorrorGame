@@ -2,15 +2,21 @@ using UnityEngine;
 
 public class Bed : MonoBehaviour, IInteractable
 {
-    [SerializeField] private DaySystem daySystem;
-    [SerializeField] private string promptText = "Press E to sleep";
+    [SerializeField] private AlarmClockManager alarmClockManager;
 
-    public string GetPromptText() => promptText;
+    public string GetPromptText()
+    {
+        if (alarmClockManager == null) return "Bed";
+        return alarmClockManager.IsAlarmSet 
+            ? "Press E to sleep" 
+            : "Sleep your alarm first";
+    }
 
     public void Interact()
     {
-        if (daySystem == null) return;
-        daySystem.AdvanceDay();
+        if (alarmClockManager == null) return;
+        if (!alarmClockManager.IsAlarmSet) return;
+        alarmClockManager.BeginSleep();
     }
 
 }

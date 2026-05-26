@@ -12,7 +12,7 @@ public enum AlarmChoice
 public class AlarmClockManager : MonoBehaviour
 {
     [SerializeField] private DaySystem daySystem;
-    [SerializeField] private WakeUpButtonMashMinigame minigame;
+    [SerializeField] private WakeUpButtonMashMiniGame minigame;
 
     [Header("Slot bonus by choice")]
     [SerializeField] private int earlyBonusSlots = 2;
