@@ -7,8 +7,10 @@ public class WakeUpButtonMashMiniGame : MonoBehaviour
 {
     [SerializeField] private GameObject panel;
     [SerializeField] private TextMeshProUGUI label;
+    [SerializeField] private GameModeController gameMode;
     [SerializeField, Min(1)] private int requiredPresses = 8;
     [SerializeField, Min(0.5f)] private float timeWindow = 3f;
+    
 
     public event Action OnSucceeded;
     public event Action OnFailed;
@@ -23,6 +25,7 @@ public class WakeUpButtonMashMiniGame : MonoBehaviour
         pressesLeft = requiredPresses;
         timeLeft = timeWindow;
         if (panel != null) panel.SetActive(true);
+        if (gameMode != null) gameMode.Set(GameMode.ModalUI);
         UpdateLabel();
     }
 
@@ -62,5 +65,6 @@ public class WakeUpButtonMashMiniGame : MonoBehaviour
     {
         isActive = false;
         if (panel != null) panel.SetActive(false);
+        if (gameMode != null) gameMode.Set(GameMode.FreeRoam);
     }
 }

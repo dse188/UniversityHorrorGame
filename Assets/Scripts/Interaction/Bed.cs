@@ -9,7 +9,7 @@ public class Bed : MonoBehaviour, IInteractable
         if (alarmClockManager == null) return "Bed";
         return alarmClockManager.IsAlarmSet 
             ? "Press E to sleep" 
-            : "Sleep your alarm first";
+            : "Set up your alarm first";
     }
 
     public void Interact()

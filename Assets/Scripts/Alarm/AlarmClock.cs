@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class AlarmClock : MonoBehaviour
+public class AlarmClock : MonoBehaviour, IInteractable
 {
     [SerializeField] private AlarmClockManager alarmClockManager;
 

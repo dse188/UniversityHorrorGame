@@ -7,6 +7,7 @@ public class InteractionSystem : MonoBehaviour
     [SerializeField] private LayerMask interactableLayer;
     [SerializeField] private float maxDistance = 3f;
     [SerializeField] private InteractionPromptUI promptUI;
+    [SerializeField] private GameModeController gameMode;
 
     private IInteractable currentTarget;
     
@@ -46,6 +47,24 @@ public class InteractionSystem : MonoBehaviour
         {
             promptUI.Hide();
         }
+    }
+
+    private void OnEnable()
+    {
+        if (gameMode != null) gameMode.OnModeChanged += HandleModeChanged;
+    }
+
+    private void OnDisable()
+    {
+        if (gameMode != null) gameMode.OnModeChanged -= HandleModeChanged;
+    }
+
+    private void HandleModeChanged(GameMode mode)
+    {
+        bool shouldRun = mode == GameMode.FreeRoam;
+        if (!shouldRun && promptUI != null) promptUI.Hide();
+        currentTarget = null;
+        enabled = shouldRun;
     }
 
 
