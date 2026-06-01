@@ -10,16 +10,18 @@ public class InteractionSystem : MonoBehaviour
     [SerializeField] private GameModeController gameMode;
 
     private IInteractable currentTarget;
-    
+    private bool isGated;
 
     private void Update()
     {
+        if (isGated) return;
         UpdateTarget();
     }
 
     public void OnInteract(InputValue value)
     {
         if (!value.isPressed) return;
+        if (isGated) return;
         currentTarget?.Interact();
     }
 
@@ -35,18 +37,11 @@ public class InteractionSystem : MonoBehaviour
 
         Debug.DrawRay(ray.origin, ray.direction * maxDistance, detected != null ? Color.red : Color.blue);
 
-        // State-change check - only touch the UI when the target actually changes.
         if (detected == currentTarget) return;
 
         currentTarget = detected;
-        if (currentTarget != null)
-        {
-            promptUI.Show(currentTarget.GetPromptText());
-        }
-        else
-        {
-            promptUI.Hide();
-        }
+        if (currentTarget != null) promptUI.Show(currentTarget.GetPromptText());
+        else                       promptUI.Hide();
     }
 
     private void OnEnable()
@@ -59,14 +54,14 @@ public class InteractionSystem : MonoBehaviour
         if (gameMode != null) gameMode.OnModeChanged -= HandleModeChanged;
     }
 
+    // WHY isGated instead of `this.enabled`: toggling `enabled` fires
+    // OnDisable, which unsubscribes us from OnModeChanged — so the
+    // FreeRoam event after a modal session would never reach us and
+    // we'd stay locked out for the rest of play mode.
     private void HandleModeChanged(GameMode mode)
     {
-        bool shouldRun = mode == GameMode.FreeRoam;
-        if (!shouldRun && promptUI != null) promptUI.Hide();
+        isGated = mode != GameMode.FreeRoam;
+        if (isGated && promptUI != null) promptUI.Hide();
         currentTarget = null;
-        enabled = shouldRun;
     }
-
-
-
 }
