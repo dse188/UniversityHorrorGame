@@ -9,6 +9,8 @@ public class StudyModeController : MonoBehaviour
     [SerializeField] private GameModeController gameMode;
     [SerializeField] private StudyPanelUI panel;
 
+    private int beginFrame = 1;
+
     [Tooltip("Must match the title of the Study task in DayDataSO.")]
     [SerializeField] private string studyTaskTitle = "Study notes";
 
@@ -52,6 +54,7 @@ public class StudyModeController : MonoBehaviour
 
         isActive = true;
         pageIndex = 0;
+        beginFrame = Time.frameCount;
 
         if (daySystem != null) daySystem.ConsumeSlot();
         if (gameMode != null) gameMode.Set(GameMode.ModalUI);
@@ -67,6 +70,9 @@ public class StudyModeController : MonoBehaviour
     private void Update()
     {
         if (!isActive) return;
+        
+        if (Time.frameCount == beginFrame) return;
+
         if (Keyboard.current == null) return;
 
         if (Keyboard.current.escapeKey.wasPressedThisFrame || Keyboard.current.qKey.wasPressedThisFrame)

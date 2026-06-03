@@ -18,12 +18,14 @@ public class WakeUpButtonMashMiniGame : MonoBehaviour
     private bool isActive;
     private int pressesLeft;
     private float timeLeft;
+    private int beginFrame = -1;
 
     public void Begin()
     {
         isActive = true;
         pressesLeft = requiredPresses;
         timeLeft = timeWindow;
+        beginFrame = Time.frameCount;
         if (panel != null) panel.SetActive(true);
         if (gameMode != null) gameMode.Set(GameMode.ModalUI);
         UpdateLabel();
@@ -35,7 +37,8 @@ public class WakeUpButtonMashMiniGame : MonoBehaviour
 
         timeLeft -= Time.deltaTime;
 
-        if (Keyboard.current != null && Keyboard.current.eKey.wasPressedThisFrame)
+        bool inputAllowed = Time.frameCount != beginFrame;
+        if (inputAllowed && Keyboard.current != null && Keyboard.current.eKey.wasPressedThisFrame)
         {
             pressesLeft--;
             if (pressesLeft <= 0)
